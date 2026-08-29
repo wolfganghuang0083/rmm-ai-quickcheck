@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 神秘客 60 秒快篩｜RunningMate 電商陪跑社</title>
+<meta name="description" content="60 秒測你的網站能不能被 ChatGPT 找到、看懂、推薦、帶去預約：3 題 AI 實測提示詞＋5 題網站自查，固定計分規則，測完直接給紅黃綠燈與修復方向。">
+<meta property="og:title" content="AI 神秘客 60 秒快篩｜RunningMate 電商陪跑社">
+<meta property="og:description" content="客戶開始問 AI 之前，先測你的網站能不能被 AI 找到、看懂、推薦、帶去預約。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://runningmatemarketing.com/agent-ready-website-audit/">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Rubik','PingFang TC','Noto Sans TC',-apple-system,sans-serif; background:#f4f7fd; color:#1d2433; line-height:1.75; padding:18px 12px 40px; }
+  .wrap { max-width:720px; margin:0 auto; }
+  .head { text-align:center; margin-bottom:18px; }
+  .head h1 { font-size:22px; color:#0d1b3e; }
+  .head p { font-size:13.5px; color:#66708a; margin-top:4px; }
+  .q { background:#fff; border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:0 1px 6px rgba(13,27,62,.06); }
+  .q h2 { font-size:15px; color:#0d1b3e; margin-bottom:6px; }
+  .prompt { background:#eef1f8; border-radius:8px; padding:10px 12px; font-size:13px; color:#3a3a3a; margin-bottom:8px; }
+  .copybtn { border:none; background:#0d1b3e; color:#fff; font-size:12.5px; font-weight:700; padding:5px 14px; border-radius:6px; cursor:pointer; margin-bottom:8px; }
+  label { display:block; font-size:14.5px; padding:3px 0; cursor:pointer; }
+  input { accent-color:#0d1b3e; margin-right:6px; }
+  .note { font-size:12.5px; color:#8a93a8; }
+  .calc { display:block; width:100%; border:none; background:#d4a017; color:#0d1b3e; font-size:17px; font-weight:700; padding:14px; border-radius:50px; cursor:pointer; margin:18px 0; }
+  #result { display:none; background:#fff; border-left:6px solid #d4a017; border-radius:12px; padding:18px 20px; }
+  #score { font-size:23px; font-weight:700; color:#0d1b3e; margin-bottom:8px; }
+  #verdict { font-size:14.5px; margin-bottom:14px; }
+  .cta a.line { display:inline-block; padding:11px 24px; background:#06C755; color:#fff; font-size:14.5px; font-weight:700; text-decoration:none; border-radius:50px; margin-right:10px; margin-bottom:8px; }
+  .cta a.form { font-size:13.5px; color:#0d1b3e; font-weight:700; }
+  .foot { text-align:center; font-size:12px; color:#8a93a8; margin-top:20px; }
+  .foot a { color:#0d1b3e; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🕵️ AI 神秘客 60 秒快篩</h1>
+    <p>前 3 題把提示詞貼給 ChatGPT 看它怎麼答；後 5 題對照自己網站勾選。</p>
+  </div>
+
+  <div class="q">
+    <h2>1｜推薦名單裡有沒有你？（15 分）</h2>
+    <div class="prompt" id="p1">我是【你的產業】的潛在客戶，在台灣想找【你提供的服務或產品】，請推薦 3 家並說明理由。</div>
+    <button class="copybtn" data-copy="p1">複製提示詞</button>
+    <label><input type="radio" name="q1" value="15">名單裡有我，理由也大致正確</label>
+    <label><input type="radio" name="q1" value="7">有同業、沒有我</label>
+    <label><input type="radio" name="q1" value="0">AI 答不出來或亂答</label>
+  </div>
+
+  <div class="q">
+    <h2>2｜AI 講得對你是誰嗎？（15 分）</h2>
+    <div class="prompt" id="p2">【你的品牌名】是做什麼的？適合哪一類客戶？</div>
+    <button class="copybtn" data-copy="p2">複製提示詞</button>
+    <label><input type="radio" name="q2" value="15">講對定位，也講對適合對象</label>
+    <label><input type="radio" name="q2" value="7">講一半、或用過時資訊</label>
+    <label><input type="radio" name="q2" value="0">講錯或說不知道</label>
+  </div>
+
+  <div class="q">
+    <h2>3｜AI 帶得到你的預約入口嗎？（15 分）</h2>
+    <div class="prompt" id="p3">我想跟【你的品牌名】預約諮詢，請給我正確的預約方式或連結。</div>
+    <button class="copybtn" data-copy="p3">複製提示詞</button>
+    <label><input type="radio" name="q3" value="15">給對入口（表單頁／官方 LINE）</label>
+    <label><input type="radio" name="q3" value="7">只給首頁，要客戶自己找</label>
+    <label><input type="radio" name="q3" value="0">找不到或給錯</label>
+  </div>
+
+  <div class="q">
+    <h2>4-8｜網站自查（有才勾）</h2>
+    <label><input type="checkbox" name="c" value="10">打開 <b>你的網址/robots.txt</b> 和 <b>/sitemap.xml</b> 都有東西（10 分）</label>
+    <label><input type="checkbox" name="c" value="10">有 <b>llms.txt</b>——給 AI 讀的網站導覽（10 分）</label>
+    <label><input type="checkbox" name="c" value="15">服務頁四件套齊：服務名稱／適合誰／報價方式／下一步按鈕（15 分）</label>
+    <label><input type="checkbox" name="c" value="10">網站有 FAQ 區塊（常見問題＋結構化標記）（10 分）</label>
+    <label><input type="checkbox" name="c" value="10">聯絡表單欄位清楚、有說明送出後會發生什麼（10 分）</label>
+    <p class="note">計分規則固定（v1）：三題實測各 15 分＋五項自查共 55 分，滿分 100。</p>
+  </div>
+
+  <button class="calc" id="calc">看我的分數 →</button>
+
+  <div id="result">
+    <div id="score"></div>
+    <div id="verdict"></div>
+    <div class="cta">
+      <a class="line" href="https://line.me/R/ti/p/@711oehaj" target="_blank" rel="noopener">把分數傳給狼大，聊聊怎麼補</a>
+      <a class="form" href="https://runningmatemarketing.com/consulting/?utm_source=quickcheck&utm_medium=tool&utm_campaign=arwa#booking" target="_blank" rel="noopener">或填表預約 30 分鐘諮詢 →</a>
+    </div>
+  </div>
+
+  <div class="foot">RunningMate 電商陪跑社｜完整版「AI 客戶神秘客」介紹：<a href="https://runningmatemarketing.com/agent-ready-website-audit/" target="_blank" rel="noopener">agent-ready-website-audit</a></div>
+</div>
+
+<script>
+document.querySelectorAll('.copybtn').forEach(function(b){
+  b.addEventListener('click', function(){
+    var t = document.getElementById(b.dataset.copy).textContent;
+    function done(){ var o=b.textContent; b.textContent='✅ 已複製'; setTimeout(function(){b.textContent=o;},1500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(done, function(){}); }
+  });
+});
+document.getElementById('calc').addEventListener('click', function(){
+  var total = 0;
+  ['q1','q2','q3'].forEach(function(n){
+    var el = document.querySelector('input[name="'+n+'"]:checked');
+    if (el) total += parseInt(el.value,10);
+  });
+  document.querySelectorAll('input[name="c"]:checked').forEach(function(el){ total += parseInt(el.value,10); });
+  var grade, msg;
+  if (total < 40) { grade='🔴'; msg='AI 目前大概率「看不見你」——推薦名單沒有你、也讀不懂你賣什麼。好消息是：這個階段的修復回報最大，從 robots、sitemap、服務頁四件套開始補，變化會很明顯。'; }
+  else if (total < 70) { grade='🟡'; msg='AI「讀得到你、但帶不動客戶」——它大致知道你是誰，卻不容易替客戶完成選方案、找入口這段旅程。這正是多數用心經營的網站卡住的位置。'; }
+  else { grade='🟢'; msg='基礎及格，你已經贏過多數同業。下一步是去拚「推薦位」：讓 AI 在比較類問題裡主動提到你，並確保它引用的是你最新、最有利的頁面。'; }
+  document.getElementById('score').textContent = grade + ' 你的快篩分數：' + total + ' / 100';
+  document.getElementById('verdict').textContent = msg + '（快篩僅供方向參考；完整版會用固定題庫實測並留下 AI 回答原文證據。）';
+  var r = document.getElementById('result');
+  r.style.display = 'block';
+  r.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+</script>
+</body>
+</html>
