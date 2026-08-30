@@ -38,8 +38,32 @@
 <div class="wrap">
   <div class="head">
     <h1>🕵️ AI 神秘客快篩</h1>
-    <p>前 3 題把提示詞貼給 ChatGPT 看它怎麼答；後 5 題對照自己網站勾選。</p>
+    <p>輸入你的網站網址，自動檢查＋AI 讀站評估，直接給分。</p>
   </div>
+
+  <div class="q" id="auto">
+    <h2>⚡ 自動快篩：輸入你的品牌網址</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px">
+      <input type="url" id="siteurl" placeholder="例：yourbrand.com" style="flex:1;min-width:220px;padding:12px 14px;font-size:15px;border:2px solid #0d1b3e;border-radius:10px">
+      <button id="runauto" style="border:none;background:#d4a017;color:#0d1b3e;font-size:15px;font-weight:700;padding:12px 22px;border-radius:10px;cursor:pointer">開始測 →</button>
+    </div>
+    <p class="note">約 10–20 秒：檢查 robots／sitemap／llms.txt／schema／FAQ／表單，並由 AI 以「消費者助理」視角讀你的首頁評分。每人每天限測 8 次。</p>
+    <div id="autoload" style="display:none;padding:12px 0;font-size:14.5px;color:#0d1b3e;font-weight:700">🔍 檢測中……（AI 正在讀你的網站）</div>
+    <div id="autoerr" style="display:none;padding:10px 12px;background:#fdecea;border-radius:8px;font-size:14px;color:#c0392b"></div>
+    <div id="autoresult" style="display:none;margin-top:10px">
+      <div id="autoscore" style="font-size:23px;font-weight:700;color:#0d1b3e;margin-bottom:6px"></div>
+      <div id="autoverdict" style="font-size:14px;color:#3a3a3a;margin-bottom:12px"></div>
+      <div id="autoitems" style="font-size:14px;line-height:1.9"></div>
+      <div id="autoai" style="margin-top:12px;padding:12px 14px;background:#eef6ff;border-radius:10px;font-size:14px;display:none"></div>
+      <div class="cta" style="margin-top:14px">
+        <a class="line" href="https://line.me/R/ti/p/@711oehaj" target="_blank" rel="noopener">把結果傳給狼大，聊聊怎麼補</a>
+        <a class="form" href="https://runningmatemarketing.com/consulting/?utm_source=quickcheck&utm_medium=tool&utm_campaign=arwa#booking" target="_blank" rel="noopener">或填表預約免費諮詢 →</a>
+      </div>
+    </div>
+  </div>
+
+  <details style="margin-bottom:14px">
+  <summary style="cursor:pointer;font-size:14.5px;font-weight:700;color:#0d1b3e;padding:8px 4px">🕵️ 進階加測（手動）：AI 在它的世界裡怎麼講你——3 題貼給 ChatGPT＋5 題自查</summary>
 
   <div class="q">
     <h2>1｜推薦名單裡有沒有你？（15 分）</h2>
@@ -89,10 +113,45 @@
     </div>
   </div>
 
+  </details>
+
   <div class="foot">RunningMate 電商陪跑社｜完整版「AI 客戶神秘客」介紹：<a href="https://runningmatemarketing.com/agent-ready-website-audit/" target="_blank" rel="noopener">agent-ready-website-audit</a></div>
 </div>
 
 <script>
+var API = "https://rmm-ai-quickcheck-api.wolfganghuang0083.workers.dev/";
+document.getElementById('runauto').addEventListener('click', function(){
+  var url = document.getElementById('siteurl').value.trim();
+  var err = document.getElementById('autoerr'), load = document.getElementById('autoload'), res = document.getElementById('autoresult');
+  err.style.display='none'; res.style.display='none';
+  if (!url) { err.textContent='請先輸入網址'; err.style.display='block'; return; }
+  load.style.display='block';
+  fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url:url})})
+  .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, d:d}; }); })
+  .then(function(x){
+    load.style.display='none';
+    if (!x.ok) { err.textContent = x.d.error || '測試失敗，請稍後再試'; err.style.display='block'; return; }
+    var d = x.d;
+    var light = d.grade==='red' ? '🔴' : d.grade==='yellow' ? '🟡' : '🟢';
+    document.getElementById('autoscore').textContent = light + ' ' + d.url.replace('https://','') + '：' + d.total + ' / ' + d.outOf;
+    var vmap = {red:'AI 目前大概率「看不見你」——這個階段的修復回報最大。', yellow:'AI「讀得到你、但帶不動客戶」——這是很常見的卡點。', green:'基礎已經及格，下一步是去拚 AI 推薦位。'};
+    document.getElementById('autoverdict').textContent = vmap[d.grade] + '（' + d.static.schemaNote + '）';
+    var html = '';
+    d.static.items.forEach(function(i){
+      var mark = i.score >= i.max ? '✅' : (i.score > 0 ? '🟡' : '❌');
+      html += mark + ' ' + i.label + '：' + i.score + '/' + i.max + '（' + i.note + '）<br>';
+    });
+    document.getElementById('autoitems').innerHTML = html;
+    var aibox = document.getElementById('autoai');
+    if (d.ai) {
+      aibox.innerHTML = '<b>🤖 AI 讀站評估（45 分）</b><br>讀得出賣什麼 ' + d.ai.sell_score + '/15・適合誰 ' + d.ai.fit_score + '/15・預約入口 ' + d.ai.action_score + '/15<br>AI 眼中的你：「' + d.ai.brand_summary + '」／聯絡入口：' + d.ai.booking_path + '<br>最該補的：' + d.ai.top_fixes.join('、');
+      aibox.style.display='block';
+    } else { aibox.style.display='none'; if (d.aiError) { document.getElementById('autoverdict').textContent += '｜' + d.aiError; } }
+    res.style.display='block'; res.scrollIntoView({behavior:'smooth', block:'nearest'});
+  })
+  .catch(function(){ load.style.display='none'; err.textContent='自動測試暫時無法使用，請先用下方「進階加測（手動）」。'; err.style.display='block'; });
+});
+
 document.querySelectorAll('.copybtn').forEach(function(b){
   b.addEventListener('click', function(){
     var t = document.getElementById(b.dataset.copy).textContent;

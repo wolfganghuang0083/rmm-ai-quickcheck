@@ -1,0 +1,17 @@
+name = "rmm-ai-quickcheck-api"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+[observability]
+enabled = true
+
+# KV for rate limiting（部署時建立：npx wrangler kv namespace create RATELIMIT）
+# [[kv_namespaces]]
+# binding = "RATELIMIT"
+# id = "TBD"
+
+# 金鑰用 secret（部署時：npx wrangler secret put OPENAI_API_KEY）
+[vars]
+OPENAI_MODEL = "gpt-4o-mini"
+DAILY_CAP = "200"
+PER_IP_CAP = "8"
