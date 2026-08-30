@@ -5,10 +5,9 @@ compatibility_date = "2026-08-01"
 [observability]
 enabled = true
 
-# KV for rate limiting（部署時建立：npx wrangler kv namespace create RATELIMIT）
-# [[kv_namespaces]]
-# binding = "RATELIMIT"
-# id = "TBD"
+[[kv_namespaces]]
+binding = "RATELIMIT"
+id = "45584c2b0c01420e82e80ff7ebb3add2"
 
 # 金鑰用 secret（部署時：npx wrangler secret put OPENAI_API_KEY）
 [vars]
