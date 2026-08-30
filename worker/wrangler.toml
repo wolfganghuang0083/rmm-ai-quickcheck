@@ -14,3 +14,5 @@ id = "45584c2b0c01420e82e80ff7ebb3add2"
 OPENAI_MODEL = "gpt-4o-mini"
 DAILY_CAP = "200"
 PER_IP_CAP = "8"
+
+rules = [{ type = "Text", globs = ["**/*.html"] }]

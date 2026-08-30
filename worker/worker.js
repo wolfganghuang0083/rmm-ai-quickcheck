@@ -1,3 +1,5 @@
+import TOOL_HTML from "../index.html";
+
 /**
  * RMM AI 神秘客快篩 API（Cloudflare Worker）
  * POST /audit {url} → 靜態檢查（55 分）＋ AI 讀站評估（45 分）＝ 100 分
@@ -7,6 +9,7 @@
  */
 
 const ALLOW_ORIGINS = [
+  "https://audit.runningmatemarketing.com",
   "https://wolfganghuang0083.github.io",
   "https://runningmatemarketing.com",
   "https://www.runningmatemarketing.com",
@@ -160,6 +163,9 @@ export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(origin) });
+    if (request.method === "GET") {
+      return new Response(TOOL_HTML, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" } });
+    }
     if (request.method !== "POST") return json({ error: "POST only" }, 405, origin);
 
     const ip = request.headers.get("CF-Connecting-IP") || "0.0.0.0";

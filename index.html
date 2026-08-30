@@ -10,6 +10,8 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://runningmatemarketing.com/wp-content/uploads/2026/08/agent-ready-audit-cover.png">
 <link rel="canonical" href="https://runningmatemarketing.com/agent-ready-website-audit/">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3TLGE69DKG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3TLGE69DKG');</script>
 <style>
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Rubik','PingFang TC','Noto Sans TC',-apple-system,sans-serif; background:#f4f7fd; color:#1d2433; line-height:1.75; padding:18px 12px 40px; }
@@ -119,7 +121,7 @@
 </div>
 
 <script>
-var API = "https://rmm-ai-quickcheck-api.wolfgang-819.workers.dev/";
+var API = location.hostname.indexOf('github.io') > -1 ? 'https://rmm-ai-quickcheck-api.wolfgang-819.workers.dev/' : '/';
 document.getElementById('runauto').addEventListener('click', function(){
   var url = document.getElementById('siteurl').value.trim();
   var err = document.getElementById('autoerr'), load = document.getElementById('autoload'), res = document.getElementById('autoresult');
