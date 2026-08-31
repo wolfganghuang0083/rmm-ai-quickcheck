@@ -159,6 +159,34 @@ async function rateLimit(env, ip) {
   return { allowed: true };
 }
 
+
+async function handleLead(request, env, origin) {
+  const u = new URL(request.url);
+  if (u.searchParams.get("k") !== (env.LEAD_KEY || "")) return json({ error: "forbidden" }, 403, origin);
+  let fields = {};
+  const ct = request.headers.get("Content-Type") || "";
+  try {
+    if (ct.includes("json")) {
+      const d = await request.json();
+      const src = d.fields || d;
+      for (const k in src) fields[k] = typeof src[k] === "object" ? (src[k].value ?? JSON.stringify(src[k])) : src[k];
+    } else {
+      const form = await request.formData();
+      for (const [k, v] of form.entries()) fields[k.replace(/^form_fields\[(.+)\]$/, "$1")] = String(v);
+    }
+  } catch (e) { return json({ error: "bad payload" }, 400, origin); }
+  const skip = /^(form_id|form_name|queried_id|post_id|referer_title|created_at)$/i;
+  const lines = Object.keys(fields).filter((k) => !skip.test(k) && String(fields[k]).trim())
+    .map((k) => `${k}: ${String(fields[k]).slice(0, 200)}`);
+  const text = "🧲 官網表單新名單！\n" + (lines.join("\n") || "(空表單)") +
+    "\n👉 建議 24 小時內接手；台帳：https://docs.google.com/spreadsheets/d/1gDrC_p-sciGK5yigKgCyH7ZhWuarqDMsDy30BHtS5LM/edit";
+  const r = await fetch(`https://api.telegram.org/bot${env.TG_TOKEN}/sendMessage`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: env.TG_CHAT, text, disable_web_page_preview: true }),
+  });
+  return json({ ok: r.ok }, r.ok ? 200 : 502, origin);
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
@@ -167,6 +195,7 @@ export default {
       return new Response(TOOL_HTML, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" } });
     }
     if (request.method !== "POST") return json({ error: "POST only" }, 405, origin);
+    if (new URL(request.url).pathname === "/lead") return handleLead(request, env, origin);
 
     const ip = request.headers.get("CF-Connecting-IP") || "0.0.0.0";
     const rl = await rateLimit(env, ip);
